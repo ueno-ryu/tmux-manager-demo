@@ -1,0 +1,9 @@
+# FIFO pipes
+*.fifo
+
+# tmux swap files
+*.swp
+
+# OS files
+.DS_Store
+Thumbs.db
