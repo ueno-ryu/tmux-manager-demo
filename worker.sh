@@ -1,16 +1,17 @@
 #!/bin/bash
 # 워커 터미널 - 매니저의 명령을 수행하고 결과를 반환
 
-CMD_FIFO="~/tmux-manager-demo/cmd.fifo"
-RESULT_FIFO="~/tmux-manager-demo/result.fifo"
+INSTALL_DIR="${HOME}/tmux-manager-demo"
+CMD_FIFO="${INSTALL_DIR}/cmd.fifo"
+RESULT_FIFO="${INSTALL_DIR}/result.fifo"
 WORKER_ID="[WORKER-$$]"
 
 # 결과를 매니저에게 전송
 send_result() {
     local status="$1"
     local message="$2"
-    echo "$status|$message" > $RESULT_FIFO
-    echo "$WORKER_ID Result sent: $status - $message"
+    echo "${status}|${message}" > "$RESULT_FIFO"
+    echo "${WORKER_ID} Result sent: ${status} - ${message}"
 }
 
 # 명령 파싱 및 실행
@@ -36,9 +37,9 @@ execute_command() {
                 # bc로 계산 (소수점 지원)
                 local result=$(echo "$args" | bc 2>/dev/null)
                 if [ $? -eq 0 ]; then
-                    send_result "SUCCESS" "$args = $result"
+                    send_result "SUCCESS" "${args} = ${result}"
                 else
-                    send_result "ERROR" "Invalid expression: $args"
+                    send_result "ERROR" "Invalid expression: ${args}"
                 fi
             fi
             ;;
@@ -46,26 +47,26 @@ execute_command() {
             report_status
             ;;
         *)
-            send_result "ERROR" "Unknown command: $cmd (try: echo, calc, status)"
+            send_result "ERROR" "Unknown command: ${cmd} (try: echo, calc, status)"
             ;;
     esac
 }
 
 # 상태 보고
 report_status() {
-    send_result "SUCCESS" "Worker alive - PID:$$ - Uptime: $(ps -o etime= -p $$ | xargs)"
+    send_result "SUCCESS" "Worker alive - PID:$$ - Uptime: $(ps -o etime= -p "$$" | xargs)"
 }
 
 # 메인 루프
 main() {
-    echo "$WORKER_ID Starting..."
-    echo "$WORKER_ID Waiting for commands..."
+    echo "${WORKER_ID} Starting..."
+    echo "${WORKER_ID} Waiting for commands..."
 
     while true; do
         # FIFO에서 명령 읽기 (blocking)
         if [ -p "$CMD_FIFO" ]; then
             if read -r cmd < "$CMD_FIFO"; then
-                echo "$WORKER_ID Received: $cmd"
+                echo "${WORKER_ID} Received: ${cmd}"
 
                 # QUIT 명령 처리
                 if [ "$cmd" = "QUIT" ]; then
@@ -77,12 +78,12 @@ main() {
                 execute_command "$cmd"
             fi
         else
-            echo "$WORKER_ID Warning: CMD_FIFO not found, waiting..."
+            echo "${WORKER_ID} Warning: CMD_FIFO not found, waiting..."
             sleep 1
         fi
     done
 
-    echo "$WORKER_ID Exiting..."
+    echo "${WORKER_ID} Exiting..."
 }
 
 main
