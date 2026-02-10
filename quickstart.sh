@@ -4,7 +4,7 @@
 
 set -e
 
-REPO_URL="${1:-https://github.com/YOUR_USERNAME/tmux-manager-demo.git}"
+REPO_URL="${1:-https://github.com/ueno-ryu/tmux-manager-demo.git}"
 INSTALL_DIR="$HOME/tmux-manager-demo"
 
 echo "=== Tmux Manager-Worker Demo Installer ==="

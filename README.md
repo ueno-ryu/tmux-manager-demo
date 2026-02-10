@@ -20,20 +20,20 @@ tmux 기반 매니저-워커 통신 시스템 데모입니다. FIFO(Named Pipe)�
 ### 한 줄로 실행
 
 ```bash
-curl -s https://raw.githubusercontent.com/[YOUR_USERNAME]/tmux-manager-demo/main/quickstart.sh | bash
+curl -s https://raw.githubusercontent.com/ueno-ryu/tmux-manager-demo/main/quickstart.sh | bash
 ```
 
 또는:
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/[YOUR_USERNAME]/tmux-manager-demo/main/quickstart.sh)
+bash <(curl -s https://raw.githubusercontent.com/ueno-ryu/tmux-manager-demo/main/quickstart.sh)
 ```
 
 ### 수동 설치
 
 ```bash
 # 1. 클론
-git clone https://github.com/[YOUR_USERNAME]/tmux-manager-demo.git
+git clone https://github.com/ueno-ryu/tmux-manager-demo.git
 cd tmux-manager-demo
 
 # 2. 실행
